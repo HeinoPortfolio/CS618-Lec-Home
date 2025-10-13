@@ -1,0 +1,6 @@
+Removed: 
+
+In module 3:
+
+-- "browser": true,
+
