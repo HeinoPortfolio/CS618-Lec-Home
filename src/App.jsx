@@ -1,6 +1,8 @@
 // import { Post } from './components/Post.jsx'
-import { PostList } from './components/PostList.jsx'
+//import { PostList } from './components/PostList.jsx'
+import { CreatePost } from './components/CreatePost.jsx'
 
+/*
 const posts = [
   {
     title: 'Some texthhhhhhhhhhhhhhhhhhhhhhhh',
@@ -16,6 +18,10 @@ const posts = [
 
 export function App() {
   return <PostList posts={posts} />
+}
+*/
+export function App() {
+  return <CreatePost />
 }
 
 // export default App
