@@ -1,27 +1,31 @@
-// import { Post } from './components/Post.jsx'
-//import { PostList } from './components/PostList.jsx'
+//import { Post } from './components/Post.jsx'
+import { PostList } from './components/PostList.jsx'
 import { CreatePost } from './components/CreatePost.jsx'
+import { PostFilter } from './components/PostFilter.jsx'
+import { PostSorting } from './components/PostSorting.jsx'
 
-/*
 const posts = [
-  {
-    title: 'Some texthhhhhhhhhhhhhhhhhhhhhhhh',
-    contents: 'some content',
-    author: 'me myself and I',
-  },
-  {
-    title: 'Some other text',
-    contents: 'some other content',
-    author: 'just me',
-  },
+  { title: 'full', contents: 'somestuff', author: 'me' },
+  { title: 'sometitle' },
 ]
 
+// Create main page ===========================================================
 export function App() {
-  return <PostList posts={posts} />
-}
-*/
-export function App() {
-  return <CreatePost />
+  return (
+    <div style={{ padding: 10 }}>
+      <CreatePost />
+      <br />
+      <hr />
+      Filter by:
+      <br />
+      <br />
+      <PostFilter field='author' />
+      <br />
+      <PostSorting fields={['createdAt', 'updatedAt']} />
+      <hr />
+      <PostList posts={posts} />
+    </div>
+  )
 }
 
 // export default App
