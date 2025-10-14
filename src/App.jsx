@@ -1,35 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { Post } from './components/Post.jsx'
+import { PostList } from './components/PostList.jsx'
 
-function App() {
-  const [count, setCount] = useState(0)
+const posts = [
+  {
+    title: 'Some texthhhhhhhhhhhhhhhhhhhhhhhh',
+    contents: 'some content',
+    author: 'me myself and I',
+  },
+  {
+    title: 'Some other text',
+    contents: 'some other content',
+    author: 'just me',
+  },
+]
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+export function App() {
+  return <PostList posts={posts} />
 }
 
-export default App
+// export default App
