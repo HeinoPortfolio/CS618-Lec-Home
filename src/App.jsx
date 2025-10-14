@@ -1,31 +1,13 @@
-//import { Post } from './components/Post.jsx'
-import { PostList } from './components/PostList.jsx'
-import { CreatePost } from './components/CreatePost.jsx'
-import { PostFilter } from './components/PostFilter.jsx'
-import { PostSorting } from './components/PostSorting.jsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Blog } from './Blog.jsx'
 
-const posts = [
-  { title: 'full', contents: 'somestuff', author: 'me' },
-  { title: 'sometitle' },
-]
+// Client to call the backenend services ======================================
+const queryClient = new QueryClient()
 
-// Create main page ===========================================================
 export function App() {
   return (
-    <div style={{ padding: 10 }}>
-      <CreatePost />
-      <br />
-      <hr />
-      Filter by:
-      <br />
-      <br />
-      <PostFilter field='author' />
-      <br />
-      <PostSorting fields={['createdAt', 'updatedAt']} />
-      <hr />
-      <PostList posts={posts} />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Blog />
+    </QueryClientProvider>
   )
 }
-
-// export default App
