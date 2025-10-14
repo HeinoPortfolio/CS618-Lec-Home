@@ -1,11 +1,11 @@
 import express from 'express'
 import { postsRoutes } from './routes/posts.js'
 import bodyParser from 'body-parser'
-//import cors from 'cors'
+import cors from 'cors'
 
 // Instatiate the application =================================================
 const app = express()
-//app.use(cors())
+app.use(cors())
 app.use(bodyParser.json())
 postsRoutes(app)
 
