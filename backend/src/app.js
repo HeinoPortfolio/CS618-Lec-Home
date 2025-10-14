@@ -13,7 +13,7 @@ const app = express()
 
 // The root or default route ==================================================
 app.get('/', (req, res) => {
-  res.send('Hello from Express! Using Nodemon!')
+  res.send('Hello from Express!')
 })
 
 export { app }
