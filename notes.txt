@@ -1,13 +1,16 @@
 General:
 -- Workbench › Editor: Enable Preview. to allow multi tabs
 -- Can use npm run dev in the command: " npm run dev" to run the backend
+-- Remember to run all Lighthouse tests in incognito mode or similar
 
 In module 3:
 -- "browser": true,
 -- "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
 -- installed npm install --save-dev cross-env
  
-
  In module 6: 
  --import { Blog } from './pages/Blog.jsx'
+
+ In module 8:
+ -- To use a distribution us the command:  "serve dist "
 
