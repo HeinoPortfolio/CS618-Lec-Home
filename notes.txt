@@ -1,5 +1,6 @@
 General:
 -- Workbench › Editor: Enable Preview. to allow multi tabs
+-- Can use npm run dev in the command: " npm run dev" to run the backend
 
 In module 3:
 -- "browser": true,
