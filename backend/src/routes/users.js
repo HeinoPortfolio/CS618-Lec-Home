@@ -1,7 +1,4 @@
-import {
-  createUser,
-  loginUser /*, getUserInfoById*/,
-} from '../services/users.js'
+import { createUser, loginUser, getUserInfoById } from '../services/users.js'
 
 // Signup route ===============================================================
 export function userRoutes(app) {
@@ -27,10 +24,10 @@ export function userRoutes(app) {
       })
     }
   })
-  /*
+
+  // Get user information by user ID ==========================================
   app.get('/api/v1/users/:id', async (req, res) => {
     const userInfo = await getUserInfoById(req.params.id)
     return res.status(200).send(userInfo)
   })
-*/
 }

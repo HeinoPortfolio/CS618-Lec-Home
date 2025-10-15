@@ -1,3 +1,6 @@
+General:
+-- Workbench › Editor: Enable Preview. to allow multi tabs
+
 In module 3:
 -- "browser": true,
 -- "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
@@ -5,5 +8,5 @@ In module 3:
  
 
  In module 6: 
- --
+ --import { Blog } from './pages/Blog.jsx'
 

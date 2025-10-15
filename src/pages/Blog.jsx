@@ -1,11 +1,13 @@
-import { PostList } from './components/PostList.jsx'
-import { CreatePost } from './components/CreatePost.jsx'
-import { PostFilter } from './components/PostFilter.jsx'
-import { PostSorting } from './components/PostSorting.jsx'
+import { PostList } from '../components/PostList.jsx'
+import { CreatePost } from '../components/CreatePost.jsx'
+import { PostFilter } from '../components/PostFilter.jsx'
+import { PostSorting } from '../components/PostSorting.jsx'
 
-import { getPosts } from './api/posts.js'
+import { getPosts } from '../api/posts.js'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+
+import { Header } from '../components/Header.jsx'
 
 // Create main page ===========================================================
 export function Blog() {
@@ -26,6 +28,7 @@ export function Blog() {
   // Form to display the application components ===============================
   return (
     <div style={{ padding: 10 }}>
+      <Header />
       <CreatePost />
       <br />
       <hr />

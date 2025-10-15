@@ -27,7 +27,8 @@ export async function loginUser({ username, password }) {
 
   return token
 }
-/*
+
+// Translate user ID into readable user information ===========================
 export async function getUserInfoById(userId) {
   try {
     const user = await User.findById(userId)
@@ -36,6 +37,4 @@ export async function getUserInfoById(userId) {
   } catch (err) {
     return { username: userId }
   }
-
 }
-  */
