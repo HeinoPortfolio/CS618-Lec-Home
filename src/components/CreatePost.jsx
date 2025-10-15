@@ -2,17 +2,22 @@ import { useState } from 'react'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { createPost } from '../api/posts.js'
 
+import { useAuth } from '../contexts/AuthContext.jsx'
+
 export function CreatePost() {
   const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+  //const [author, setAuthor] = useState('')
   const [contents, setContents] = useState('')
 
-  //Create tjhe query client =======================
+  // Get the token ===========================
+  const [token] = useAuth()
+
+  // Create tjhe query client =======================
   const queryClient = useQueryClient()
 
   // Create the post mutation ==================
   const createPostMutation = useMutation({
-    mutationFn: () => createPost({ title, author, contents }),
+    mutationFn: () => createPost(token, { title, contents }),
     onSuccess: () => queryClient.invalidateQueries(['posts']),
   })
 
@@ -21,6 +26,9 @@ export function CreatePost() {
     e.preventDefault()
     createPostMutation.mutate()
   }
+
+  // If there is NO TOKEN do not show the rest of the form ====================
+  if (!token) return <div>Please log in to create a new post.</div>
 
   // Form for creating the new post ===========================================
   return (
@@ -36,16 +44,6 @@ export function CreatePost() {
         />
       </div>
       <br />
-      <div>
-        <label htmlFor='create-author'>Author: </label>
-        <input
-          type='text'
-          name='create-author'
-          id='create-author'
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-      </div>
       <br />
       <textarea
         value={contents}
