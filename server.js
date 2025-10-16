@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url'
 import express from 'express'
 import dotenv from 'dotenv'
 
+//import { generateSitemap } from './generateSitemap.js'
+
 dotenv.config()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -46,9 +48,53 @@ async function createDevServer() {
   return app
 }
 
-// Create the development server ==============================================
-const app = await createDevServer()
+// Create a production server =================================================
+async function createProdServer() {
+  const app = express()
 
-app.listen(process.env.PORT, () =>
-  console.log(`ssr dev server running on http://localhost:${process.env.PORT}`),
-)
+  app.use((await import('compression')).default())
+  app.use(
+    (await import('serve-static')).default(
+      path.resolve(__dirname, 'dist/client'),
+      {
+        index: false,
+      },
+    ),
+  )
+  app.use('*', async (req, res, next) => {
+    try {
+      let template = fs.readFileSync(
+        path.resolve(__dirname, 'dist/client/index.html'),
+        'utf-8',
+      )
+      const render = (await import('./dist/server/entry-server.js')).render
+      const appHtml = await render(req)
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  return app
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // Create the production server =============================================
+  const app = await createProdServer()
+
+  app.listen(process.env.PORT, () =>
+    console.log(
+      `ssr dev server running on http://localhost:${process.env.PORT}`,
+    ),
+  )
+} else {
+  // Create the development server ============================================
+  const app = await createDevServer()
+
+  app.listen(process.env.PORT, () =>
+    console.log(
+      `ssr dev server running on http://localhost:${process.env.PORT}`,
+    ),
+  )
+}
