@@ -7,6 +7,16 @@ import { getPostById } from '../api/posts.js'
 
 import { Helmet } from 'react-helmet-async'
 
+// TRuncations function to keep tags to a maximum of 160 characters ===========
+function truncate(str, max = 160) {
+  if (!str) return str
+  if (str.length > max) {
+    return str.slice(0, max - 3) + '...'
+  } else {
+    return str
+  }
+}
+
 // Function to view an individual post ========================================
 export function ViewPost({ postId }) {
   const postQuery = useQuery({
@@ -22,6 +32,8 @@ export function ViewPost({ postId }) {
       {post && (
         <Helmet>
           <title>{post.title} | Full-Stack React Blog </title>
+          <title>{post.title} | Full-Stack React Blog</title>
+          <meta name='description' content={truncate(post.contents)} />
         </Helmet>
       )}
       <Header />
