@@ -85,7 +85,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.listen(process.env.PORT, () =>
     console.log(
-      `ssr dev server running on http://localhost:${process.env.PORT}`,
+      `SSR Production server running on http://localhost:${process.env.PORT}`,
     ),
   )
 } else {
@@ -94,7 +94,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.listen(process.env.PORT, () =>
     console.log(
-      `ssr dev server running on http://localhost:${process.env.PORT}`,
+      `SSR Development server running on http://localhost:${process.env.PORT}`,
     ),
   )
 }

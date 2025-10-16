@@ -5,17 +5,19 @@ General Notes:
 -- Can use "npm run dev" in the frontend to run a development server
 -- Can use "npm start" to run a production server in the frontend
 
-
 In module 3:
 -- "browser": true,
 -- "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
 -- installed npm install --save-dev cross-env
- 
- In module 6: 
- --import { Blog } from './pages/Blog.jsx'
 
- In module 8:
- -- To use a distribution us the command:  "serve dist " for the frontend
+In module 4:
+-- Review for getting rid of teh CSS formatting in the application 
+
+In module 6: 
+--import { Blog } from './pages/Blog.jsx'
+
+In module 8:
+-- To use a distribution use the command:  "serve dist " for the frontend
 
 
  
