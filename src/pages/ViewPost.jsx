@@ -5,6 +5,8 @@ import { Header } from '../components/Header.jsx'
 import { Post } from '../components/Post.jsx'
 import { getPostById } from '../api/posts.js'
 
+import { Helmet } from 'react-helmet-async'
+
 // Function to view an individual post ========================================
 export function ViewPost({ postId }) {
   const postQuery = useQuery({
@@ -14,9 +16,14 @@ export function ViewPost({ postId }) {
 
   const post = postQuery.data
 
-  // Page for viewing the singel post ========================================
+  // Page for viewing the single post ========================================
   return (
     <div style={{ padding: 10 }}>
+      {post && (
+        <Helmet>
+          <title>{post.title} | Full-Stack React Blog </title>
+        </Helmet>
+      )}
       <Header />
       <br />
       <hr />

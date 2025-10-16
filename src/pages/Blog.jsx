@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Header } from '../components/Header.jsx'
 
-//import PropTypes from 'prop-types'
+import { Helmet } from 'react-helmet-async'
 
 // Create main page ===========================================================
 export function Blog() {
@@ -28,6 +28,9 @@ export function Blog() {
   // Form to display the application components ===============================
   return (
     <div style={{ padding: 10 }}>
+      <Helmet>
+        <title>Full-Stack React Blog</title>
+      </Helmet>
       <Header />
       <CreatePost />
       <br />

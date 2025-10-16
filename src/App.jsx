@@ -2,14 +2,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthContextProvider } from './contexts/AuthContext.jsx'
 import PropTypes from 'prop-types'
 
+import { HelmetProvider } from 'react-helmet-async'
+
 // Client to call the backend services ========================================
 const queryClient = new QueryClient()
 
 export function App({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>{children}</AuthContextProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   )
 }
 
