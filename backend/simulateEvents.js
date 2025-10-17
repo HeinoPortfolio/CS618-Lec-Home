@@ -1,4 +1,5 @@
 // Script to create some test data for user interaction =======================
+
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -12,9 +13,11 @@ import { trackEvent } from './src/services/events.js'
 
 const simulationStart = Date.now() - 1000 * 60 * 60 * 24 * 30
 const simulationEnd = Date.now()
+
+// users = 5, posts = 10, views = 10000
 const simulatedUsers = 5
-const simulatedPosts = 10
-const simulatedViews = 10000
+const simulatedPosts = 2
+const simulatedViews = 20
 
 // Function to create and initialize the database =============================
 // Will create users and the events for statistics ============================
