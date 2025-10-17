@@ -1,8 +1,8 @@
 import {
-  trackEvent /*
+  trackEvent,
   getTotalViews,
   getDailyViews,
-  getDailyDurations, */,
+  getDailyDurations,
 } from '../services/events.js'
 import { getPostById } from '../services/posts.js'
 
@@ -22,7 +22,7 @@ export function eventRoutes(app) {
       console.error('error tracking action', err)
     }
   })
-  /*
+
   // Total views route ======================================================
   app.get('/api/v1/events/totalViews/:postId', async (req, res) => {
     try {
@@ -73,5 +73,4 @@ export function eventRoutes(app) {
       return res.status(500).end()
     }
   })
-    */
 }

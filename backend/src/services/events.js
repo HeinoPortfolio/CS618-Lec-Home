@@ -13,7 +13,7 @@ export async function trackEvent({
 
   return await event.save()
 }
-/*
+
 // Get total number of views ==================================================
 export async function getTotalViews(postId) {
   return {
@@ -87,4 +87,3 @@ export async function getDailyDurations(postId) {
     },
   ])
 }
-*/

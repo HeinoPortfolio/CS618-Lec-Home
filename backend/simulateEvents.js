@@ -17,7 +17,7 @@ const simulationEnd = Date.now()
 // users = 5, posts = 10, views = 10000
 const simulatedUsers = 5
 const simulatedPosts = 2
-const simulatedViews = 20
+const simulatedViews = 5
 
 // Function to create and initialize the database =============================
 // Will create users and the events for statistics ============================
