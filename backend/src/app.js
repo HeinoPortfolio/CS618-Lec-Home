@@ -4,6 +4,8 @@ import { userRoutes } from './routes/users.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
+import { eventRoutes } from './routes/event.js'
+
 // Instatiate the application =================================================
 const app = express()
 app.use(cors())
@@ -12,6 +14,8 @@ app.use(bodyParser.json())
 // Application Routes =========================================================
 postsRoutes(app)
 userRoutes(app)
+
+eventRoutes(app)
 
 // The root or default route ==================================================
 app.get('/', (req, res) => {

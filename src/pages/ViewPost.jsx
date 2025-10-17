@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Header } from '../components/Header.jsx'
 import { Post } from '../components/Post.jsx'
 import { getPostById } from '../api/posts.js'
 import { Helmet } from 'react-helmet-async'
-
 import { getUserInfo } from '../api/users.js'
+
+import { useEffect, useState } from 'react'
+import { postTrackEvent } from '../api/events.js'
 
 // TRuncations function to keep tags to a maximum of 160 characters ===========
 function truncate(str, max = 160) {
@@ -20,6 +22,27 @@ function truncate(str, max = 160) {
 
 // Function to view an individual post ========================================
 export function ViewPost({ postId }) {
+  // Session states for viewing the post ======================================
+  const [session, setSession] = useState()
+
+  // Create a mutation to handle a change =====================================
+  const trackEventMutation = useMutation({
+    mutationFn: (action) => postTrackEvent({ postId, action, session }),
+    onSuccess: (data) => setSession(data?.session),
+  })
+
+  // Code to handle an event that effects the system ==========================
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      trackEventMutation.mutate('startView')
+      timeout = null
+    }, 1000)
+    return () => {
+      if (timeout) clearTimeout(timeout)
+      else trackEventMutation.mutate('endView')
+    }
+  }, [])
+
   const postQuery = useQuery({
     queryKey: ['post', postId],
     queryFn: () => getPostById(postId),
