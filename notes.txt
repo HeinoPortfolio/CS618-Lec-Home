@@ -19,6 +19,9 @@ In module 6:
 In module 8:
 -- To use a distribution use the command:  "serve dist " for the frontend
 
+In module 9:
+-- Changed database from  "DATABASE_URL=mongodb://localhost:27017/blog" to "DATABASE_URL=mongodb://localhost:27017/blog-simulated"
+
 
  
 
