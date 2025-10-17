@@ -6,7 +6,6 @@ export const postTrackEvent = (event) =>
     body: JSON.stringify(event),
   }).then((res) => res.json())
 
-/*
 // API method to get total views of the post ========================================
 export const getTotalViews = (postId) =>
   fetch(`${import.meta.env.VITE_BACKEND_URL}/events/totalViews/${postId}`).then(
@@ -24,5 +23,3 @@ export const getDailyDurations = (postId) =>
   fetch(
     `${import.meta.env.VITE_BACKEND_URL}/events/dailyDurations/${postId}`,
   ).then((res) => res.json())
-
-  */

@@ -6,9 +6,10 @@ import { Post } from '../components/Post.jsx'
 import { getPostById } from '../api/posts.js'
 import { Helmet } from 'react-helmet-async'
 import { getUserInfo } from '../api/users.js'
-
 import { useEffect, useState } from 'react'
 import { postTrackEvent } from '../api/events.js'
+
+import { PostStats } from '../components/PostStats.jsx'
 
 // TRuncations function to keep tags to a maximum of 160 characters ===========
 function truncate(str, max = 160) {
@@ -84,7 +85,11 @@ export function ViewPost({ postId }) {
       <hr />
       <pre>
         {post ? (
-          <Post {...post} fullPost />
+          <div>
+            <Post {...post} fullPost />
+            <hr />
+            <PostStats postId={postId} />
+          </div>
         ) : (
           `Post with id${postId} not found!`
         )}
