@@ -54,9 +54,74 @@ query sortQuery($options: PostsOptions) {
     createdAt
   }
 }
--- Sort options 
+-- Sort variables: 
 {
   "options": {"sortBy":"updatedAt",
   "sortOrder": "ascending"}
 }
 ** can sort by contents, title, updatedAt, createdAt
+
+-- Queries to login and signup using GraphQL ==============================
+
+1) Signup a user
+
+mutation Mutation($username: String!, $password: String!) {
+  signupUser(username: $username, password: $password) {
+    username
+  }
+}
+
+-- Variables:
+{  
+  "username": "graphql2",
+  "password": "graphql2"
+}
+
+2) Login in a user
+
+mutation LoginUser($username: String!, $password: String!) {
+  loginUser(username: $username, password: $password)
+
+  
+}
+
+-- Variables:
+{ 
+  "username": "graphql2",
+  "password": "graphql2"
+}
+
+3) Create a post as a logged in user  
+
+mutation CreatePost($title: String!, $contents: String) {
+  createPost(title: $title, contents: $contents) {
+    id
+  }
+}
+
+
+-- Variables 
+{ 
+  "title": "Test from Apollo 2",
+  "contents": "Some contents  and some more text@"
+}
+
+-- Header:
+
+Authorization  Bearer [ey... [Token string goes here]]
+
+4) Test query to get post 
+query Query($postByIdId: ID!) {
+  postById(id: $postByIdId) {
+    author {
+      username
+    }
+     title
+     contents
+  }
+}
+
+-- Variables:
+{
+  "postByIdId": "68f3e95c0fb5ced2670fc2d9"
+}
