@@ -1,3 +1,62 @@
 Notes for Module 10 GraphQL:
 
 -- Using the "http://localhost:3000/graphql" will take you to the GraphQL Sandbox
+
+GraphQL Queries run in the Sandbox:
+
+1) Get all posts
+
+query GetPostsOverview{
+  posts{
+    id
+    title
+    author{
+      username
+    }
+  }
+}
+
+2) Get a post by a id 
+
+query PostById($postByIdId: ID!) {
+  postById(id: $postByIdId) {
+    contents
+    author {
+      username
+    }
+    title
+  }
+}
+
+2 B) Get post by Id an all posts by a user/author
+
+query PostById($postByIdId: ID!) {
+  postById(id: $postByIdId) {
+    contents
+    author {
+      username
+      posts {
+        title
+      }
+    }
+    title
+  }
+}
+
+3) Get sorted posts by updated example
+
+query sortQuery($options: PostsOptions) {
+  posts(options: $options) {
+    id
+    title
+    contents
+    updatedAt
+    createdAt
+  }
+}
+-- Sort options 
+{
+  "options": {"sortBy":"updatedAt",
+  "sortOrder": "ascending"}
+}
+** can sort by contents, title, updatedAt, createdAt
