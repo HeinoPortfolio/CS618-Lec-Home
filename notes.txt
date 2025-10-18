@@ -1,3 +1,5 @@
+This branch will be used for GraphQL module #10
+
 General Notes:
 -- Workbench › Editor: Enable Preview. to allow multi tabs
 -- Can use npm run dev in the command: " npm run dev" to run the backend
