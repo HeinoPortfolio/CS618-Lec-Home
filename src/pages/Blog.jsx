@@ -2,12 +2,12 @@ import { PostList } from '../components/PostList.jsx'
 import { CreatePost } from '../components/CreatePost.jsx'
 import { PostFilter } from '../components/PostFilter.jsx'
 import { PostSorting } from '../components/PostSorting.jsx'
-import { getPosts } from '../api/posts.js'
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Header } from '../components/Header.jsx'
-
 import { Helmet } from 'react-helmet-async'
+
+import { useQuery as useGraphQLQuery } from '@apollo/client/react/index.js'
+import { GET_POSTS } from '../api/graphql/posts.js'
 
 // Create main page ===========================================================
 export function Blog() {
@@ -16,14 +16,11 @@ export function Blog() {
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('descending')
 
-  // Create a useQuery instance ==============
-  const postsQuery = useQuery({
-    queryKey: ['posts', { author, sortBy, sortOrder }],
-    queryFn: () => getPosts({ author, sortBy, sortOrder }),
-  })
+  // Create an instance of a GraphQL posts query ==============================
+  const postQuery = useGraphQLQuery(GET_POSTS)
 
-  // Extract the data to be used ==============================================
-  const posts = postsQuery.data ?? []
+  // Save the data from the query =============================================
+  const posts = postQuery.data?.posts ?? []
 
   // Form to display the application components ===============================
   return (
@@ -60,8 +57,3 @@ export function Blog() {
     </div>
   )
 }
-/*
-Blog.propTypes = {
-  initialData: PropTypes.shape(PostList.propTypes.posts),
-}
-  */
