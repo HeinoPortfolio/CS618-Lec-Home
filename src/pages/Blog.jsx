@@ -5,7 +5,6 @@ import { PostSorting } from '../components/PostSorting.jsx'
 import { useState } from 'react'
 import { Header } from '../components/Header.jsx'
 import { Helmet } from 'react-helmet-async'
-
 import { useQuery as useGraphQLQuery } from '@apollo/client/react/index.js'
 import { GET_POSTS } from '../api/graphql/posts.js'
 
@@ -17,7 +16,9 @@ export function Blog() {
   const [sortOrder, setSortOrder] = useState('descending')
 
   // Create an instance of a GraphQL posts query ==============================
-  const postQuery = useGraphQLQuery(GET_POSTS)
+  const postQuery = useGraphQLQuery(GET_POSTS, {
+    variables: { options: { sortBy, sortOrder } },
+  })
 
   // Save the data from the query =============================================
   const posts = postQuery.data?.posts ?? []
