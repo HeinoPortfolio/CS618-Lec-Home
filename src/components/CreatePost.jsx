@@ -1,30 +1,34 @@
 import { useState } from 'react'
-import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { createPost } from '../api/posts.js'
-
 import { useAuth } from '../contexts/AuthContext.jsx'
+
+import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
+import {
+  CREATE_POST,
+  GET_POSTS,
+  GET_POSTS_BY_AUTHOR,
+} from '../api/graphql/posts.js'
+
+import { Link } from 'react-router-dom'
+import slug from 'slug'
 
 export function CreatePost() {
   const [title, setTitle] = useState('')
-  //const [author, setAuthor] = useState('')
   const [contents, setContents] = useState('')
 
   // Get the token ===========================
   const [token] = useAuth()
 
-  // Create tjhe query client =======================
-  const queryClient = useQueryClient()
-
-  // Create the post mutation ==================
-  const createPostMutation = useMutation({
-    mutationFn: () => createPost(token, { title, contents }),
-    onSuccess: () => queryClient.invalidateQueries(['posts']),
+  // Create the post mutation =================================================
+  const [createPost, { loading, data }] = useGraphQLMutation(CREATE_POST, {
+    variables: { title, contents },
+    context: { headers: { Authorization: `Bearer ${token}` } },
+    refetchQueries: [GET_POSTS, GET_POSTS_BY_AUTHOR],
   })
 
   // External function to handle the action of the form being submitted=======
   const handleSubmit = (e) => {
     e.preventDefault()
-    createPostMutation.mutate()
+    createPost()
   }
 
   // If there is NO TOKEN do not show the rest of the form ====================
@@ -53,24 +57,20 @@ export function CreatePost() {
       <br />
       <input
         type='submit'
-        value={
-          createPostMutation.isPending
-            ? 'Creating Post...'
-            : 'Click to Create Post'
-        }
-        disabled={!title}
+        value={loading ? 'Creating Post...' : 'Click to Create Post'}
+        disabled={!title || loading}
       />
-      {createPostMutation.isSuccess ? (
+      {data?.createPost ? (
         <>
           <br />
+          <Link
+            to={`/posts/${data.createPost.id}/${slug(data.createPost.title)}`}
+          >
+            {data.createPost.title}
+          </Link>{' '}
           The post was created successfully!
         </>
-      ) : (
-        <>
-          <br />
-          Post was not created!!!
-        </>
-      )}
+      ) : null}
     </form>
   )
 }
