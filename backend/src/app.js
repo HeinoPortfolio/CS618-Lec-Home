@@ -3,10 +3,11 @@ import { postsRoutes } from './routes/posts.js'
 import { userRoutes } from './routes/users.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-
-// New ipmorts for socket.io module =========
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
+
+// New import
+import { handleSocket } from './socket.js'
 
 // Instatiate the application =================================================
 const app = express()
@@ -27,14 +28,8 @@ const io = new Server(server, {
   },
 })
 
-// Setup a connection event  ==================================================
-io.on('connection', (socket) => {
-  console.log('User connected:', socket.id)
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id)
-  })
-})
-// End socket addition ====
+// Handle the socket ==========================================================
+handleSocket(io)
 
 // The root or default route ==================================================
 app.get('/', (req, res) => {

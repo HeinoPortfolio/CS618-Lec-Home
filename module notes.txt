@@ -9,3 +9,7 @@ Module 12 Notes:
     -- add:
 -- Frontend:
     -- Install the client for the frontend:     npm install socket.io-client@4.7.2
+
+===== Create the Backend
+
+-- 
