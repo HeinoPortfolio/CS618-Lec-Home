@@ -1,0 +1,11 @@
+Module 12 Notes:
+
+-- Install socket.io:                       npm install socket.io@4.7.2
+-- Change the database environment variable 
+    DATABASE_URL=mongodb://localhost:27017/blog  
+    to
+    DATABASE_URL=mongodb://localhost:27017/chat
+-- Integrate the node server in backen/src/app.js
+    -- add:
+-- Frontend:
+    -- Install the client for the frontend:     npm install socket.io-client@4.7.2
