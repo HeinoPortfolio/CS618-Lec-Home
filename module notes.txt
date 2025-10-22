@@ -1,3 +1,10 @@
+General notes:
+
+-- List of parameters start with '?'
+-- The query parameter for passing simple message in the URL is: 'mymsg'
+-- The query parameter for the room (in the URL) is: 'room'
+-- To add another parameter use '&' in the URL
+
 Module 12 Notes:
 
 -- Install socket.io:                       npm install socket.io@4.7.2
@@ -10,6 +17,5 @@ Module 12 Notes:
 -- Frontend:
     -- Install the client for the frontend:     npm install socket.io-client@4.7.2
 
-===== Create the Backend
-
--- 
+ -- Broadcast to everyone but the sender ===================
+    -- socket.broadcast.emit('chat.message', { username: socket.id, message })

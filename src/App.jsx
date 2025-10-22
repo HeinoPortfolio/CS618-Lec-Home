@@ -9,7 +9,10 @@ import { AuthContextProvider } from './contexts/AuthContext.jsx'
 import { io } from 'socket.io-client'
 
 // Create a socket ============================================================
-const socket = io(import.meta.env.VITE_SOCKET_HOST)
+// Socket initializeer ===
+const socket = io(import.meta.env.VITE_SOCKET_HOST, {
+  query: 'room=' + new URLSearchParams(window.location.search).get('room'),
+})
 
 // Client to call the backenend services ======================================
 const queryClient = new QueryClient()
@@ -31,16 +34,17 @@ const router = createBrowserRouter([
 ])
 
 // Event handlers =============================================================
-socket.on('connect', () => {
+socket.on('connect', async () => {
   console.log('connected to socket.io as', socket.id)
-  // send a messsage to the server about the connection =======
-  //socket.emit('chat.message', 'Hello from the client!')
 
   // Get message from parameter ===============================
   socket.emit(
     'chat.message',
     new URLSearchParams(window.location.search).get('mymsg'),
   )
+  // New addition ======
+  const userInfo = await socket.emitWithAck('user.info', socket.id)
+  console.log('User info', userInfo)
 })
 socket.on('connect_error', (err) => {
   console.error('socket.io connect error:', err)
