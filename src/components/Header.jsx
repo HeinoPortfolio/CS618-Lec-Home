@@ -3,8 +3,19 @@ import { jwtDecode } from 'jwt-decode'
 import { useAuth } from '../contexts/AuthContext.jsx'
 import { User } from './user.jsx'
 
+import { useSocket } from '../contexts/SocketIOContext.jsx'
+
 export function Header() {
   const [token, setToken] = useAuth()
+
+  // Create the socket ========================================================
+  const { socket } = useSocket()
+
+  // Handle the logout =======================================================
+  const handleLogout = () => {
+    socket.disconnect()
+    setToken(null)
+  }
 
   if (token) {
     const { sub } = jwtDecode(token)
@@ -17,7 +28,7 @@ export function Header() {
         </b>
         <br />
         <br />
-        <button onClick={() => setToken(null)}>Logout</button>
+        <button onClick={handleLogout}>Logout</button>
         <br />
         <br />
       </div>
@@ -26,8 +37,8 @@ export function Header() {
   // Header information to be displayed========================================
   return (
     <div>
-      <h1> Welcome To The Blog! </h1>
-      <Link to='/login'>Log In</Link> | <Link to='signup'>Sign Up</Link>
+      <h1> Welcome To Post Chat! </h1>
+      <Link to='/login'>Log In</Link> | <Link to='/signup'>Sign Up</Link>
       <br />
       <br />
       <hr />
