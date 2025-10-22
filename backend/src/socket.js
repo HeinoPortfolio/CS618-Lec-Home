@@ -6,15 +6,14 @@ export function handleSocket(io) {
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id)
     })
-    // Attach a "chat.message" handler ========
     socket.on('chat.message', (message) => {
-      console.log(`${socket.id}: ${message}`)
-      // Produce a broadcast message event =============
-      // *** In chat message we want everyone to receive the message ***** ====
-      io.emit('chat.message', { username: socket.id, message })
+      console.log(`Message from: ${socket.id}: ${message}`) /
+        // Produce a message evnt =============================
+        // Broadcast to everyone including the sender of the message ===============
+        io.emit('chat.message', { username: socket.id, message })
 
-      // To keep the original sender from receiving the message ====
-      //socket.broadcast.emit('chat.message', { username: socket.id, message })************************
+      // Broadcast to everyone but the sender ===================
+      //socket.broadcast.emit('chat.message', { username: socket.id, message })
     })
   })
 }

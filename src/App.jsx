@@ -36,7 +36,7 @@ socket.on('connect', () => {
   // send a messsage to the server about the connection =======
   //socket.emit('chat.message', 'Hello from the client!')
 
-  // Get message from the parameters ==================================
+  // Get message from parameter ===============================
   socket.emit(
     'chat.message',
     new URLSearchParams(window.location.search).get('mymsg'),
