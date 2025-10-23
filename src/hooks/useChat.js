@@ -9,6 +9,18 @@ export function useChat() {
     setMessages((messages) => [...messages, message])
   }
 
+  // Clear the messages =====
+  function clearMessages() {
+    setMessages([])
+  }
+
+  // Get rooms ======
+  async function getRooms() {
+    const userInfo = await socket.emitWithAck('user.info', socket.id)
+    const rooms = userInfo.rooms.filter((room) => room !== socket.id)
+    return rooms
+  }
+
   useEffect(() => {
     socket.on('chat.message', receiveMessage)
     return () => socket.off('chat.message', receiveMessage)
@@ -22,11 +34,10 @@ export function useChat() {
       switch (command) {
         case 'clear':
           // Reset the array of messages ====
-          setMessages([])
+          clearMessages()
           break
         case 'rooms': {
-          const userInfo = await socket.emitWithAck('user.info', socket.id)
-          const rooms = userInfo.rooms.filter((room) => room !== socket.id)
+          const rooms = await getRooms()
           receiveMessage({
             message: `You are in: ${rooms.join(', ')}`,
           })
@@ -39,8 +50,8 @@ export function useChat() {
           break
       }
     } else {
-      // Show themessage
-      socket.emit('chat.message', message)
+      // Show the message
+      socket.emit('chat.message', 'public', message)
     }
   }
   return { messages, sendMessage }
