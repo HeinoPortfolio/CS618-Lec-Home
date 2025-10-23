@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { getUserInfoById } from './services/users.js'
 
+import { createMessage, getMessagesByRoom } from './services/messages.js'
+
 // Setup a connection event  ==================================================
 // socket handler===
 export function handleSocket(io) {
@@ -25,7 +27,7 @@ export function handleSocket(io) {
   }) // End Authentication ====
 
   // Function to handle the connection ==========================================
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     console.log('User connected:', socket.id)
 
     // Room addition ===========================================================
@@ -38,6 +40,15 @@ export function handleSocket(io) {
     // Message to show that the user joined a room =============
     console.log(socket.id, 'Joined room:', room)
 
+    // New =====
+    // Get the messages from the database ======================
+    const messages = await getMessagesByRoom(room)
+
+    // For each message broadcast them =====
+    messages.forEach(({ username, message }) =>
+      socket.emit('chat.message', { username, message, replayed: true }),
+    )
+
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id)
     })
@@ -47,14 +58,16 @@ export function handleSocket(io) {
         // Broadcast to everyone including the sender of the message ==========
         // Will be broadcasting to the room only ==============================
 
-        //io.to(room).emit('chat.message', { username: socket.id, message })
-        io
-          .to(room)
-          .emit('chat.message', { username: socket.user.username, message })
-
+        io.to(room).emit('chat.message', {
+          username: socket.user.username,
+          message,
+        })
+      createMessage({ username: socket.user.username, message, room })
       // Broadcast to everyone but the sender ===================
+      // DO NOT REMOVE the statement below ======================
       //socket.broadcast.emit('chat.message', { username: socket.id, message })
     })
+
     socket.on('user.info', async (socketId, callback) => {
       const sockets = await io.in(socketId).fetchSockets()
 
