@@ -10,12 +10,15 @@ export function handleSocket(io) {
   io.on('connection', (socket) => {
     joinRoom(io, socket, { room: 'public' })
 
+    // Send a public message
     socket.on('chat.message', (room, message) =>
       sendPublicMessage(io, { username: socket.user.username, room, message }),
     )
 
-    //socket.on('chat.join', (room) => joinRoom(io, socket, { room }))
+    // Join a room othen then public ===============
+    socket.on('chat.join', (room) => joinRoom(io, socket, { room }))
 
+    // Get user information ========================
     socket.on('user.info', async (socketId, callback) =>
       callback(await getUserInfoBySocketId(io, socketId)),
     )

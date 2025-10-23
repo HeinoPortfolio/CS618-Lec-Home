@@ -4,21 +4,10 @@ import { useSocket } from '../contexts/SocketIOContext.jsx'
 export function useChat() {
   const { socket } = useSocket()
   const [messages, setMessages] = useState([])
+  const [currentRoom, setCurrentRoom] = useState('public')
 
   function receiveMessage(message) {
     setMessages((messages) => [...messages, message])
-  }
-
-  // Clear the messages =====
-  function clearMessages() {
-    setMessages([])
-  }
-
-  // Get rooms ======
-  async function getRooms() {
-    const userInfo = await socket.emitWithAck('user.info', socket.id)
-    const rooms = userInfo.rooms.filter((room) => room !== socket.id)
-    return rooms
   }
 
   useEffect(() => {
@@ -26,20 +15,78 @@ export function useChat() {
     return () => socket.off('chat.message', receiveMessage)
   }, [])
 
+  function clearMessages() {
+    setMessages([])
+  }
+
+  // Switch to a room ==================
+  function switchRoom(room) {
+    setCurrentRoom(room)
+  }
+
+  // Join a room ========================
+  function joinRoom(room) {
+    socket.emit('chat.join', room)
+    switchRoom(room)
+  }
+
+  async function getRooms() {
+    const userInfo = await socket.emitWithAck('user.info', socket.id)
+    const rooms = userInfo.rooms.filter((room) => room !== socket.id)
+    return rooms
+  }
+
   async function sendMessage(message) {
     if (message.startsWith('/')) {
-      // Get the command part of the string =====
-      const command = message.substring(1)
-
+      const [command, ...args] = message.substring(1).split(' ')
       switch (command) {
         case 'clear':
-          // Reset the array of messages ====
           clearMessages()
           break
         case 'rooms': {
           const rooms = await getRooms()
           receiveMessage({
             message: `You are in: ${rooms.join(', ')}`,
+          })
+          break
+        }
+        case 'join': {
+          if (args.length === 0) {
+            return receiveMessage({
+              message: 'Please provide a room name: /join <room>',
+            })
+          }
+          // Get the room name ===========
+          const room = args[0]
+          // Get list of available rooms =====
+          const rooms = await getRooms()
+
+          if (rooms.includes(room)) {
+            return receiveMessage({
+              message: `You are already in room "${room}".`,
+            })
+          }
+          // Join if the user is not already in the room =======
+          joinRoom(room)
+          break
+        }
+        case 'switch': {
+          if (args.length === 0) {
+            return receiveMessage({
+              message: 'Please provide a room name: /switch <room>',
+            })
+          }
+          const room = args[0]
+          const rooms = await getRooms()
+
+          if (!rooms.includes(room)) {
+            return receiveMessage({
+              message: `You are not in room "${room}". Type "/join ${room}" to join it first.`,
+            })
+          }
+          switchRoom(room)
+          receiveMessage({
+            message: `Switched to room "${room}".`,
           })
           break
         }
@@ -50,9 +97,9 @@ export function useChat() {
           break
       }
     } else {
-      // Show the message
-      socket.emit('chat.message', 'public', message)
+      socket.emit('chat.message', currentRoom, message)
     }
   }
+
   return { messages, sendMessage }
 }
