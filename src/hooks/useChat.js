@@ -5,7 +5,6 @@ export function useChat() {
   const { socket } = useSocket()
   const [messages, setMessages] = useState([])
 
-  // Appends new message to the array ==================
   function receiveMessage(message) {
     setMessages((messages) => [...messages, message])
   }
@@ -15,8 +14,34 @@ export function useChat() {
     return () => socket.off('chat.message', receiveMessage)
   }, [])
 
-  function sendMessage(message) {
-    socket.emit('chat.message', message)
+  async function sendMessage(message) {
+    if (message.startsWith('/')) {
+      // Get the command part of the string =====
+      const command = message.substring(1)
+
+      switch (command) {
+        case 'clear':
+          // Reset the array of messages ====
+          setMessages([])
+          break
+        case 'rooms': {
+          const userInfo = await socket.emitWithAck('user.info', socket.id)
+          const rooms = userInfo.rooms.filter((room) => room !== socket.id)
+          receiveMessage({
+            message: `You are in: ${rooms.join(', ')}`,
+          })
+          break
+        }
+        default:
+          receiveMessage({
+            message: `Unknown command: ${command}`,
+          })
+          break
+      }
+    } else {
+      // Show themessage
+      socket.emit('chat.message', message)
+    }
   }
   return { messages, sendMessage }
 }
